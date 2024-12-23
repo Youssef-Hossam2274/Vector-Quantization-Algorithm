@@ -33,3 +33,18 @@ def convertPixelsToImage(pixels, size):
     image = image.resize(size)
     
     return image
+
+def saveCodeBook(codeBook: list[list[list]], fileName: str = "codeBook.txt"):
+    with open(fileName, 'w') as file:
+        file.write(f'len:{len(codeBook)}\n')
+        file.write(f'width:{len(codeBook[0][0])}\n')
+        file.write(f'hight:{len(codeBook[0])}\n')
+        for block in codeBook:
+            for row in block:
+                file.write(' '.join(map(str, row)) + '\n')
+            file.write('\n')
+
+def saveCompressedImage(compressedImage: list[list], fileName: str):
+    with open(fileName, 'w') as file:
+        for row in compressedImage:
+            file.write(' '.join(map(str, row)) + '\n')
