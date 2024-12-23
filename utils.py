@@ -9,7 +9,6 @@ def loadImage(imageName: str) -> Image:
     imagePath = os.path.join("Images", imageName)
     return Image.open(imagePath)
 
-
 def convertImageToGrid(image: Image) -> list[list]:
     grayscale_image = image.convert("L")
     pixels = list(grayscale_image.getdata())
@@ -48,3 +47,27 @@ def saveCompressedImage(compressedImage: list[list], fileName: str):
     with open(fileName, 'w') as file:
         for row in compressedImage:
             file.write(' '.join(map(str, row)) + '\n')
+
+def loadCodeBook(fileName: str = "codeBook.txt") -> list[list[list]]:
+    with open(fileName, 'r') as file:
+        lines = file.readlines()
+        codeBookSize = int(lines[0].split(':')[1])
+        width = int(lines[1].split(':')[1])
+        height = int(lines[2].split(':')[1])
+        
+        codeBook = []
+        block = []
+        for line in lines[3:]:
+            if line.strip():
+                block.append(list(map(int, line.split())))
+                if len(block) == height:
+                    codeBook.append(block)
+                    block = []
+        return codeBook
+
+def loadCompressedImage(fileName: str) -> list[list[int]]:
+    with open(fileName, 'r') as file:
+        compressedImage = []
+        for line in file:
+            compressedImage.append(list(map(int, line.split())))
+    return compressedImage

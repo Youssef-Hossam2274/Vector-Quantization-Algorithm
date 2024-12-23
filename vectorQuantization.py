@@ -1,5 +1,3 @@
-
-
 TODO: "remove this implementaiton and implement the vector quationation algorithm" # type: ignore
 def getCodeBook(pixels: list[list], width: int, hight: int, codeBookSize: int) -> list[list[list]]:
    
@@ -36,3 +34,16 @@ def compressImage(pixels: list[list], codeBook: list[list[list]], width: int, hi
             label = codeBook.index(closestBlock)
             compressedPixels[i // hight][j // width] = label
     return compressedPixels
+
+def decompressImage(compressedImage: list[list[int]], codeBook: list[list[list]], width: int, height: int) -> list[list[int]]:
+    pixels = []
+    for i in range(len(compressedImage)):
+        row = []
+        for j in range(len(compressedImage[0])):
+            label = compressedImage[i][j]
+            block = codeBook[label]
+            for k in range(height):
+                if len(pixels) <= i * height + k:
+                    pixels.append([])
+                pixels[i * height + k].extend(block[k])
+    return pixels

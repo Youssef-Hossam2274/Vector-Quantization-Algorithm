@@ -1,13 +1,13 @@
 from PIL import Image
-from utils import listImages, loadImage, convertImageToGrid, saveImage, convertPixelsToImage, saveCodeBook, saveCompressedImage
-from vectorQuantization import getCodeBook, compressImage
+from utils import listImages, loadImage, convertImageToGrid, saveImage, convertPixelsToImage, saveCodeBook, saveCompressedImage, loadCodeBook, loadCompressedImage
+from vectorQuantization import getCodeBook, compressImage, decompressImage
 
 
 def compression():
     # print(listImages("Images"))
     # imageName = input("Enter the name of the image you want to compress:")
     
-    imageName = "fruit.bmp"
+    imageName = "photographer.bmp"
     image = loadImage(imageName)
     pixels = convertImageToGrid(image)
 
@@ -29,10 +29,19 @@ def compression():
 
 
 def decompression():
-    pass
+    codeBook = loadCodeBook()
+    width = len(codeBook[0][0])
+    height = len(codeBook[0])
+
+    compressedImage = loadCompressedImage("compressedImage.txt")
+    pixels = decompressImage(compressedImage, codeBook, width, height)    
+
+    image = convertPixelsToImage(pixels, (len(pixels[0]), len(pixels)))
+    image.show()
 
 def main():
     compression()
+    decompression()
 
 
 
